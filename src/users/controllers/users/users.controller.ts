@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 
@@ -25,6 +25,29 @@ export class UsersController {
     createUser(@Body() userData: CreateUserDto) {
         console.log("res from client: ", userData)
         return userData
+    }
+
+    // express way of params handling in nest
+
+    // @Get("/:id")
+    // getUserById(@Req() request: Request, @Res() response: Response) {
+    //     console.log("params: ", request.params)
+    //     response.send("It's working")
+    // }
+
+    // Now let's handle it in nestjs way
+    @Get("/:id")
+    getUserById(@Param("id") id: string) {
+        console.log("id: ", id)
+        return {id}
+    }
+
+    // doing stuffs with query parameter
+    // we can use query parameter for different stuffs like filtering, searching etc
+    @Get()
+    getFilteredUser(@Query("sortBy") sortBy: string) {
+        console.log("sort by: ", sortBy)
+        return {msg: "It helps in sorting as per query parameter"}
     }
 
     @Get("posts")
