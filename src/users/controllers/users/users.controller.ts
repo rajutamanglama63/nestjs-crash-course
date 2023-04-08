@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 
 @Controller('users')
 export class UsersController {
@@ -9,10 +10,21 @@ export class UsersController {
         return [{username: "Raju", email: "raju@fusemachine.com", posts: []}, {username: "Anisha", email: "anisha@fusemachine.com", posts: []}]
     }
 
+    // This whole method looks quite old, as same as express
+    // So, let's refactor it.
+
+    // @Post()
+    // createUser(@Req() request: Request, @Res() response: Response) {
+    //     console.log("response from client: ", request.body)
+    //     response.send("Hey, it's responding!")
+    // }
+
+
+    // Lets do it in more like nestJs way
     @Post()
-    createUser(@Req() request: Request, @Res() response: Response) {
-        console.log("response from client: ", request.body)
-        response.send("Hey, it's responding!")
+    createUser(@Body() userData: CreateUserDto) {
+        console.log("res from client: ", userData)
+        return userData
     }
 
     @Get("posts")
