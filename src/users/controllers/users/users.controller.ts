@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseBoolPipe, ParseIntPipe, Post, Query, Req, Res, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 
@@ -22,6 +22,8 @@ export class UsersController {
 
     // Lets do it in more like nestJs way
     @Post()
+    // for validation purpose we have to use certain decorators
+    @UsePipes(new ValidationPipe())
     createUser(@Body() userData: CreateUserDto) {
         console.log("res from client: ", userData)
         return userData
@@ -37,7 +39,9 @@ export class UsersController {
 
     // Now let's handle it in nestjs way
     @Get("/:id")
-    getUserById(@Param("id") id: string) {
+    // By default nestjs assumes everything in url as string
+    // To convert number string like id from url, we can use parser pipe of nestjs
+    getUserById(@Param("id", ParseIntPipe) id: number) {
         console.log("id: ", id)
         return {id}
     }
@@ -45,7 +49,8 @@ export class UsersController {
     // doing stuffs with query parameter
     // we can use query parameter for different stuffs like filtering, searching etc
     @Get()
-    getFilteredUser(@Query("sortBy") sortBy: string) {
+    // we can validate query parameter too
+    getFilteredUser(@Query("sortBy", ParseBoolPipe) sortBy: boolean) {
         console.log("sort by: ", sortBy)
         return {msg: "It helps in sorting as per query parameter"}
     }
