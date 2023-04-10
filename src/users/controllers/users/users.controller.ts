@@ -30,7 +30,8 @@ export class UsersController {
     @UsePipes(new ValidationPipe())
     createUser(@Body() userData: CreateUserDto) {
         console.log("res from client: ", userData)
-        return userData
+
+        return this.userService.createUser(userData)
     }
 
     // express way of params handling in nest
@@ -46,8 +47,8 @@ export class UsersController {
     // By default nestjs assumes everything in url as string
     // To convert number string like id from url, we can use parser pipe of nestjs
     getUserById(@Param("id", ParseIntPipe) id: number) {
-        console.log("id: ", id)
-        return {id}
+        
+        return this.userService.fetchUserById(id)
     }
 
     // doing stuffs with query parameter

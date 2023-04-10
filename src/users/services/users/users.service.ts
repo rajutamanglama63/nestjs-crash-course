@@ -1,15 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { CreateUserType } from 'src/utils/type';
 
 @Injectable()
 export class UsersService {
     private fakeUsers = [
-        {username: "Raju", email: "raju@fusemachine.com", posts: []},
-        {username: "Syldina", email: "syldina@codebeuty.com", posts: []}, 
-        {username: "Anisha", email: "anisha@fusemachine.com", posts: []},
-        {username: "Lekha", email: "lekha@lechaengineer.com", posts: []},
+        {id: 1, username: "Raju", email: "raju@fusemachine.com", posts: []},
+        {id: 2, username: "Syldina", email: "syldina@codebeuty.com", posts: []}, 
+        {id: 3, username: "Anisha", email: "anisha@fusemachine.com", posts: []},
+        {id: 4, username: "Lekha", email: "lekha@lekhaengineer.com", posts: []},
     ]
 
     fetchUsers () {
         return this.fakeUsers
+    }
+
+    createUser (userDetails: CreateUserType) {
+        this.fakeUsers.push(userDetails)
+        return userDetails;
+    }
+
+    fetchUserById (id: number) {
+        let allUsers = this.fakeUsers
+
+        let fetchedUser = allUsers.find((user) => user.id === id)
+        return fetchedUser;
     }
 }
