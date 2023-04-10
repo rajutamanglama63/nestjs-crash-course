@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserType } from 'src/utils/type';
 
 @Injectable()
@@ -23,6 +23,12 @@ export class UsersService {
         let allUsers = this.fakeUsers
 
         let fetchedUser = allUsers.find((user) => user.id === id)
-        return fetchedUser;
+
+        if(!fetchedUser) {
+            throw new HttpException("User not found", HttpStatus.BAD_REQUEST)
+        } else {
+
+            return fetchedUser;
+        }
     }
 }
