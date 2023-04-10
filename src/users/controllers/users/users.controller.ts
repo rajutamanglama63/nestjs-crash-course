@@ -1,13 +1,17 @@
 import { Body, Controller, Get, Param, ParseBoolPipe, ParseIntPipe, Post, Query, Req, Res, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
+import { UsersService } from 'src/users/services/users/users.service';
 
 @Controller('users')
 export class UsersController {
+    constructor(private userService: UsersService) {
+        this.userService
+    }
 
     @Get()
     getUsers() {
-        return [{username: "Raju", email: "raju@fusemachine.com", posts: []}, {username: "Anisha", email: "anisha@fusemachine.com", posts: []}]
+        return this.userService.fetchUsers()
     }
 
     // This whole method looks quite old, as same as express
